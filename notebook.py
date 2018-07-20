@@ -5,27 +5,28 @@ class Notebook:
 
     def __init__(self, path=None):
         if path is not None:
-            self.cells, self.meta_data = self.read_notebook(path)
+            self.cells, self.meta_data = self.__read_notebook(path)
 
-    def read_notebook(self, path):
-        notebook_dct = self.read_json(path)
-        return self.read_dct(notebook_dct)
+    def json_str(self):
+        return json.dumps(self.__json_dct(), indent=4)
 
-    def read_dct(self, dct):
+
+    # Private:
+    def __read_notebook(self, path):
+        notebook_dct = self.__read_json(path)
+        return self.__read_dct(notebook_dct)
+
+    def __read_dct(self, dct):
         cells = dct['cells']
         del dct['cells']
         return cells, dct
 
-    def read_json(self, path):
+    def __read_json(self, path):
         with open(path) as notebook_file:
             s = notebook_file.read()
             return json.loads(s)
 
-    def json_str(self):
-        return json.dumps(self.json_dct(), indent=4)
-
-
-    def json_dct(self):
+    def __json_dct(self):
         dct = { 'cells': self.cells }
         dct.update(self.meta_data)
         return dct
