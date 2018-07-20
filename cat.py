@@ -1,6 +1,5 @@
 import sys
-
-from notebook import Notebook
+from jupyter_helper import nb
 
 # handle argument exceptions
 if len(sys.argv) < 3:
@@ -14,7 +13,7 @@ target_notebook_dct = {}
 # read notebooks
 notebook_lst = []
 for path in notebook_path_lst:
-    notebook_lst.append(Notebook(path))
+    notebook_lst.append(nb.Notebook(path))
 
 # read cells from notebooks
 cells_lst = []
@@ -22,7 +21,7 @@ for notebook in notebook_lst:
     cells_lst += notebook.cells
 
 # write target notebook
-target_notebook = Notebook()
+target_notebook = nb.Notebook()
 target_notebook.cells = cells_lst
 target_notebook.meta_data = notebook_lst[0].meta_data
 
