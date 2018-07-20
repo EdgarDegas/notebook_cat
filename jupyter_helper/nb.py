@@ -11,6 +11,23 @@ class Notebook:
     def json_str(self):
         return json.dumps(self.__json_dct(), indent=4)
 
+    # Override:
+
+    def __getitem__(self, index):
+        if self.cells is None:
+            raise Exception('No cells in notebook.')
+        return self.cells[index]
+
+    def __add__(self, another):
+        if self.cells is None or another.cells is None:
+            raise Exception('No cells in notebook.')
+
+        result = Notebook()
+        result.cells = self.cells + another.cells
+        result.meta_data = self.meta_data
+
+        return result
+
 
     # Private:
     def __json_dct(self):
