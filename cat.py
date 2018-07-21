@@ -1,5 +1,6 @@
 import json
 import sys
+import nb
 
 
 # read argument
@@ -9,6 +10,15 @@ if len(argv) < 2: raise Exception('参数数量必须 >= 2')
 
 
 # read notebooks from paths (aka(即) argv)
+notebook_lst = []
+
+for path in argv:
+    notebook_lst.append(nb.Notebook(path))
+
+
+
+
+
 target_cells = []
 
 for path in argv:
