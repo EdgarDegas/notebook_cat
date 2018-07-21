@@ -1,7 +1,6 @@
 import json
 import sys
-import nb
-
+from JupyterHelper import nb
 
 # read argument
 argv = sys.argv[1:]
