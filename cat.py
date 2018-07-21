@@ -1,4 +1,3 @@
-import json
 import sys
 from JupyterHelper import nb
 
@@ -10,6 +9,8 @@ if len(argv) < 2: raise Exception('参数数量必须 >= 2')
 notebook_lst = []
 
 for path in argv:
+    if '.ipynb' not in path:
+        path += '.ipynb'
     notebook_lst.append(nb.Notebook(path))
 
 target_notebook = notebook_lst[0]
