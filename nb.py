@@ -4,9 +4,22 @@ class Notebook:
     """Read path, extract cells and meta_data from file.
     """
 
-    def __init__(self, path):
-        # self.path = path
-        self.cells, self.meta_data = self.__read_file(path)
+    def __init__(self, path=None):
+        if path is not None:
+            self.cells, self.meta_data = self.__read_file(path)
+
+    def __add__(self, another):
+        cells = self.cells + another.cells
+        notebook = Notebook()
+        notebook.cells = cells
+        notebook.meta_data = self.meta_data
+
+        return notebook
+
+    def jsons(self):
+        dct = {'cells':self.cells}
+        dct.update(self.meta_data)
+        return json.dumps(dct, indent=4)
 
     def __read_file(self, path):
         # return cells, meta_data
