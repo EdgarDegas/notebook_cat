@@ -1,32 +1,33 @@
 import json
-
-# read notebooks
-notebook1 = open('1.ipynb')
-notebook1_str = notebook1.read()
-
-notebook1_json = json.loads(notebook1_str)
-cells1 = notebook1_json['cells']
-
-notebook2 = open('2.ipynb')
-notebook2_str = notebook2.read()
-notebook2_json = json.loads(notebook2_str)
-
-cells2 = notebook2_json['cells']
-
-del notebook1_json['cells']
+import sys
 
 
-# cat two notebooks
-target_cells = cells1 + cells2
-
-target_notebook = {}
-
-target_notebook['cells'] = target_cells
-target_notebook.update(notebook1_json)
-
-target_str = json.dumps(target_notebook)
+# read argument
+argv = sys.argv[1:]
+if len(argv) < 2: raise Exception('参数数量必须 >= 2')
 
 
 
-target = open('target_notebook.ipynb', 'w')
-target.write(target_str)
+# read notebooks from paths (aka(即) argv)
+target_cells = []
+
+for path in argv:
+    with open(path) as notebook_file:
+        s = notebook_file.read()
+        notebook_dct = json.loads(s)
+        target_cells += notebook_dct['cells']
+
+
+        if path is argv[0]:
+            del notebook_dct['cells']
+            meta_data = notebook_dct
+
+target_notebook = {
+    'cells': target_cells
+}
+
+target_notebook.update(meta_data)
+target_str = json.dumps(target_notebook, indent=4)
+
+with open('target_notebook.ipynb', 'w') as target_file:
+    target_file.write(target_str)
